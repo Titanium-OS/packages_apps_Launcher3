@@ -129,6 +129,7 @@ import com.android.launcher3.model.data.LauncherAppWidgetInfo;
 import com.android.launcher3.model.data.PromiseAppInfo;
 import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.notification.NotificationListener;
+import com.android.launcher3.titanium.TitaniumUtils;
 import com.android.launcher3.pm.PinRequestHelper;
 import com.android.launcher3.pm.UserCache;
 import com.android.launcher3.popup.PopupContainerWithArrow;
@@ -1079,6 +1080,13 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
         if (!mDeferOverlayCallbacks) {
             mOverlayManager.onActivityPaused(this);
         }
+    }
+
+    public void startActivitySafelyAuth(View v, Intent intent, ItemInfo item,
+            String sourceContainer) {
+        TitaniumUtils.showLockScreen(this, getString(R.string.trust_apps_manager_name), () -> {
+            startActivitySafely(v, intent, item, sourceContainer);
+        });
     }
 
     class LauncherOverlayCallbacksImpl implements LauncherOverlayCallbacks {
