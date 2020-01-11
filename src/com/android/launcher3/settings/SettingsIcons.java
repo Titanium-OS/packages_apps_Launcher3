@@ -27,6 +27,14 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
 
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragment;
+import androidx.preference.PreferenceFragment.OnPreferenceStartFragmentCallback;
+import androidx.preference.PreferenceFragment.OnPreferenceStartScreenCallback;
+import androidx.preference.PreferenceGroup.PreferencePositionCallback;
+import androidx.preference.PreferenceScreen;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.launcher3.LauncherFiles;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
@@ -37,13 +45,10 @@ import com.android.launcher3.util.SecureSettingsObserver;
 import static com.android.launcher3.SessionCommitReceiver.ADD_ICON_PREFERENCE_KEY;
 import static com.android.launcher3.util.SecureSettingsObserver.newNotificationSettingsObserver;
 
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragment;
-import androidx.preference.PreferenceFragment.OnPreferenceStartFragmentCallback;
-import androidx.preference.PreferenceFragment.OnPreferenceStartScreenCallback;
-import androidx.preference.PreferenceGroup.PreferencePositionCallback;
-import androidx.preference.PreferenceScreen;
-import androidx.recyclerview.widget.RecyclerView;
+import com.titanium.launcher.customization.IconDatabase;
+import com.titanium.launcher.settings.IconPackPrefSetter;
+import com.titanium.launcher.settings.ReloadingListPreference;
+import com.titanium.launcher.util.AppReloader;
 
 /**
  * Settings activity for Launcher. Currently implements the following setting: Allow rotation
@@ -51,6 +56,10 @@ import androidx.recyclerview.widget.RecyclerView;
 public class SettingsIcons extends Activity
         implements OnPreferenceStartFragmentCallback, OnPreferenceStartScreenCallback,
         SharedPreferences.OnSharedPreferenceChangeListener{
+
+    public interface OnResumePreferenceCallback {
+        void onResume();
+    }
 
     private static final String NOTIFICATION_DOTS_PREFERENCE_KEY = "pref_icon_badging";
     /** Hidden field Settings.Secure.ENABLED_NOTIFICATION_LISTENERS */
@@ -60,6 +69,7 @@ public class SettingsIcons extends Activity
     public static final String EXTRA_SHOW_FRAGMENT_ARGS = ":settings:show_fragment_args";
     private static final int DELAY_HIGHLIGHT_DURATION_MILLIS = 600;
     public static final String SAVE_HIGHLIGHTED_KEY = "android:preference_highlighted";
+    private static final String KEY_ICON_PACK = "pref_icon_pack";
 
     @Override
     protected void onCreate(final Bundle bundle) {
@@ -134,6 +144,16 @@ public class SettingsIcons extends Activity
                     screen.removePreference(preference);
                 }
             }
+
+            final Context context = getActivity();
+            ReloadingListPreference icons = (ReloadingListPreference) findPreference(KEY_ICON_PACK);
+            icons.setOnReloadListener(new IconPackPrefSetter(context));
+            icons.setOnPreferenceChangeListener((pref, val) -> {
+                IconDatabase.clearAll(context);
+                IconDatabase.setGlobal(context, (String) val);
+                AppReloader.get(context).reload();
+                return true;
+            });
         }
 
         @Override
