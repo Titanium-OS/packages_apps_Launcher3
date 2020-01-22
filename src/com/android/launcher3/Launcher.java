@@ -1084,7 +1084,7 @@ public class Launcher extends StatefulActivity<LauncherState> implements Launche
 
     public void startActivitySafelyAuth(View v, Intent intent, ItemInfo item,
             String sourceContainer) {
-        TitaniumUtils.showLockScreen(this, getString(R.string.trust_apps_manager_name), () -> {
+        TitaniumUtils.showLockScreen(this, getString(R.string.trust_apps_manager_name_dialog), () -> {
             startActivitySafely(v, intent, item, sourceContainer);
         });
     }
