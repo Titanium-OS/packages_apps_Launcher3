@@ -9,6 +9,17 @@
         android:persistent="true"/>
 
     <PreferenceCategory
+        android:key="home_hotseat_category"
+        android:title="@string/home_hotseat_title"/>
+
+    <SwitchPreference
+        android:key="pref_dock_search"
+        android:title="@string/dock_search_title"
+        android:summary="@string/dock_search_summary"
+        android:defaultValue="true"
+        android:persistent="true"/>
+
+    <PreferenceCategory
         android:key="home_general_category"
         android:title="@string/home_general_title">
 
