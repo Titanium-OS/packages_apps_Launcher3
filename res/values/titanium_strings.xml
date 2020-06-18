@@ -101,4 +101,8 @@
     <!-- Icon pack -->
     <string name="app_info_icon_pack">Icon pack</string>
     <string name="app_info_icon_pack_none">None</string>
+
+    <!-- App drawer columns-->
+    <string name="num_default">Default</string>
+    <string name="number_of_columns_title">Set the number of columns</string>
 </resources>

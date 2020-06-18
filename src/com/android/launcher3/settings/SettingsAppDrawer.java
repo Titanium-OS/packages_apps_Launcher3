@@ -71,6 +71,9 @@ public class SettingsAppDrawer extends Activity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (Utilities.GRID_COLUMNS.equals(key)) {
+            Utilities.restart(this);
+        }
     }
 
     private boolean startFragment(String fragment, Bundle args, String key) {

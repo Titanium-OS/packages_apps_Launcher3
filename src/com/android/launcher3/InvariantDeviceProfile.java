@@ -274,9 +274,9 @@ public class InvariantDeviceProfile implements OnSharedPreferenceChangeListener 
         defaultLayoutId = closestProfile.defaultLayoutId;
         demoModeLayoutId = closestProfile.demoModeLayoutId;
         numFolderRows = closestProfile.numFolderRows;
-        numFolderColumns = closestProfile.numFolderColumns;
+        numFolderColumns = Utilities.getGridColumns(context, closestProfile.numFolderColumns);
         numAllAppsColumns = closestProfile.numAllAppsColumns;
-        numColumnsAllApps = closestProfile.numColumnsAllApps;
+        numColumnsAllApps = Utilities.getGridColumns(context, closestProfile.numColumnsAllApps);
 
         mExtraAttrs = closestProfile.extraAttrs;
 
