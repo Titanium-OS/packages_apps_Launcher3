@@ -61,8 +61,6 @@ public class SettingsActivity extends FragmentActivity
     private static final int DELAY_HIGHLIGHT_DURATION_MILLIS = 600;
     public static final String SAVE_HIGHLIGHTED_KEY = "android:preference_highlighted";
 
-    public static boolean restartNeeded = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +86,6 @@ public class SettingsActivity extends FragmentActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        LauncherAppState.getInstanceNoCreate().setNeedsRestart();
     }
 
     @Override
@@ -224,9 +221,6 @@ public class SettingsActivity extends FragmentActivity
 
         @Override
         public void onDestroy() {
-            // if we don't press the home button but the back button to close Settings,
-            // then we must force a restart because the home button watcher wouldn't trigger it
-            LauncherAppState.getInstanceNoCreate().checkIfRestartNeeded();
             super.onDestroy();
         }
     }

@@ -135,14 +135,6 @@ public class SettingsHomescreen extends Activity
                     screen.removePreference(preference);
                 }
             }
-
-            Preference showDocksearch = findPreference(Utilities.KEY_DOCK_SEARCH);
-            showDocksearch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Utilities.restart(getActivity());
-                    return true;
-                }
-            });
         }
 
         @Override
@@ -167,9 +159,25 @@ public class SettingsHomescreen extends Activity
                 case KEY_ENABLE_MINUS_ONE:
                     mShowGoogleAppPref = preference;
                     updateIsGoogleAppEnabled();
+                    addRestartOnPrefChangeListener(preference);
+                    return true;
+                case Utilities.KEY_DOCK_SEARCH:
+                    addRestartOnPrefChangeListener(preference);
+                    return true;
+                case Utilities.KEY_SHOW_SEARCHBAR:
+                    addRestartOnPrefChangeListener(preference);
                     return true;
             }
             return true;
+        }
+
+        private void addRestartOnPrefChangeListener(Preference preference) {
+            preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Utilities.restart(getActivity());
+                    return true;
+                }
+            });
         }
 
         public static boolean isGSAEnabled(Context context) {
