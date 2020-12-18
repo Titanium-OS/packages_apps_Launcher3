@@ -40,70 +40,63 @@
 
         <Preference
             android:key="about_credit01"
-            android:title="Lawnchair Team"
+            android:title="Amir Zaidi (Shade Launcher)"
             android:persistent="false"
             android:selectable="false">
         </Preference>
 
         <Preference
             android:key="about_credit02"
-            android:title="OmniROM"
+            android:title="Lawnchair Team"
             android:persistent="false"
             android:selectable="false">
         </Preference>
 
         <Preference
             android:key="about_credit03"
-            android:title="Dirty Unicorns"
+            android:title="Chris Crump (AOSPA)"
             android:persistent="false"
             android:selectable="false">
         </Preference>
 
         <Preference
             android:key="about_credit04"
-            android:title="LineageOS"
+            android:title="Max Weninger (OmniROM)"
             android:persistent="false"
             android:selectable="false">
         </Preference>
 
         <Preference
             android:key="about_credit05"
-            android:title="hundeva (Lean Launcher)"
+            android:title="Pranav Vashi (crDroid Android)"
             android:persistent="false"
             android:selectable="false">
         </Preference>
 
         <Preference
             android:key="about_credit06"
-            android:title="Amir Zaidi"
-            android:persistent="false"
-            android:selectable="false">
-        </Preference>
-
-        <Preference
-            android:key="about_credit07"
-            android:title="ElDainosor (Bootleggers ROM)"
-            android:persistent="false"
-            android:selectable="false">
-        </Preference>
-
-        <Preference
-            android:key="about_credit08"
-            android:title="Chris Crump (AOSPA/Cypher OS)"
-            android:persistent="false"
-            android:selectable="false">
-        </Preference>
-
-        <Preference
-            android:key="about_credit09"
             android:title="Ezio Lacandia Bijelkic (ABC ROM)"
             android:persistent="false"
             android:selectable="false">
         </Preference>
 
         <Preference
-            android:key="about_credit10"
-            android:title="Pranav Vashi (crDroid Android)"
+            android:key="about_credit07"
+            android:title="Dirty Unicorns"
+            android:persistent="false"
+            android:selectable="false">
+        </Preference>
+
+        <Preference
+            android:key="about_credit08"
+            android:title="LineageOS"
+            android:persistent="false"
+            android:selectable="false">
+        </Preference>
+
+        <Preference
+            android:key="about_credit09"
+            android:title="ElDainosor (Bootleggers ROM)"
             android:persistent="false"
             android:selectable="false">
         </Preference>
