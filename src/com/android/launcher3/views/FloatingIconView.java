@@ -272,7 +272,7 @@ public class FloatingIconView extends FrameLayout implements
             int width = (int) pos.width();
             int height = (int) pos.height();
             if (supportsAdaptiveIcons) {
-                drawable = getFullDrawable(l, info, width, height, sTmpObjArray);
+                drawable = getFullDrawable(l, info, width, height, false, sTmpObjArray);
                 if (drawable instanceof AdaptiveIconDrawable) {
                     badge = getBadge(l, info, sTmpObjArray[0]);
                 } else {
@@ -285,7 +285,7 @@ public class FloatingIconView extends FrameLayout implements
                     // Similar to DragView, we simply use the BubbleTextView icon here.
                     drawable = btvIcon;
                 } else {
-                    drawable = getFullDrawable(l, info, width, height, sTmpObjArray);
+                    drawable = getFullDrawable(l, info, width, height, false, sTmpObjArray);
                 }
             }
         }

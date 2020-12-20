@@ -20,7 +20,6 @@ import static com.android.launcher3.anim.Interpolators.ACCEL;
 import static com.android.launcher3.anim.Interpolators.DEACCEL;
 
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -33,7 +32,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.Property;
 
-import com.android.launcher3.graphics.PlaceHolderIconDrawable;
 import com.android.launcher3.icons.BitmapInfo;
 import com.android.launcher3.model.data.ItemInfoWithIcon;
 import com.android.launcher3.util.Themes;
@@ -286,7 +284,7 @@ public class FastBitmapDrawable extends Drawable {
         }
 
         @Override
-        public FastBitmapDrawable newDrawable() {
+        public Drawable newDrawable() {
             return new FastBitmapDrawable(mBitmap, mIconColor, mIsDisabled);
         }
 
@@ -294,41 +292,5 @@ public class FastBitmapDrawable extends Drawable {
         public int getChangingConfigurations() {
             return 0;
         }
-    }
-
-    /**
-     * Interface to be implemented by custom {@link BitmapInfo} to handle drawable construction
-     */
-    public interface Factory {
-
-        /**
-         * Called to create a new drawable
-         */
-        FastBitmapDrawable newDrawable();
-    }
-
-    /**
-     * Returns a FastBitmapDrawable with the icon.
-     */
-    public static FastBitmapDrawable newIcon(Context context, ItemInfoWithIcon info) {
-        FastBitmapDrawable drawable = newIcon(context, info.bitmap);
-        drawable.setIsDisabled(info.isDisabled());
-        return drawable;
-    }
-
-    /**
-     * Creates a drawable for the provided BitmapInfo
-     */
-    public static FastBitmapDrawable newIcon(Context context, BitmapInfo info) {
-        final FastBitmapDrawable drawable;
-        if (info instanceof Factory) {
-            drawable = ((Factory) info).newDrawable();
-        } else if (info.isLowRes()) {
-            drawable = new PlaceHolderIconDrawable(info, context);
-        } else {
-            drawable = new FastBitmapDrawable(info);
-        }
-        drawable.mDisabledAlpha = Themes.getFloat(context, R.attr.disabledIconAlpha, 1f);
-        return drawable;
     }
 }

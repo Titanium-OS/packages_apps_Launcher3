@@ -19,6 +19,7 @@ package com.android.launcher3.icons;
 import android.content.Context;
 
 import com.android.launcher3.InvariantDeviceProfile;
+import com.android.launcher3.R;
 import com.android.launcher3.graphics.IconShape;
 import com.android.launcher3.graphics.LauncherPreviewRenderer;
 
@@ -27,6 +28,8 @@ import com.android.launcher3.graphics.LauncherPreviewRenderer;
  * that are threadsafe.
  */
 public class LauncherIcons extends BaseIconFactory implements AutoCloseable {
+
+    private static final String EXTRA_BADGEPKG = "badge_package";
 
     private static final Object sPoolSync = new Object();
     private static LauncherIcons sPool;

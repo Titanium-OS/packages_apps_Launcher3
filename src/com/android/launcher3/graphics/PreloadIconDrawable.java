@@ -18,7 +18,6 @@
 package com.android.launcher3.graphics;
 
 import static com.android.launcher3.graphics.IconShape.DEFAULT_PATH_SIZE;
-import static com.android.launcher3.graphics.IconShape.getShapePath;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -83,7 +82,7 @@ public class PreloadIconDrawable extends FastBitmapDrawable {
     private final ItemInfoWithIcon mItem;
 
     // Path in [0, 100] bounds.
-    private final Path mShapePath;
+    private final Path mProgressPath;
 
     private final Path mScaledTrackPath;
     private final Path mScaledProgressPath;
@@ -104,10 +103,13 @@ public class PreloadIconDrawable extends FastBitmapDrawable {
 
     private ObjectAnimator mCurrentAnim;
 
-    public PreloadIconDrawable(ItemInfoWithIcon info, Context context) {
+    /**
+     * @param progressPath fixed path in the bounds [0, 0, 100, 100] representing a progress bar.
+     */
+    public PreloadIconDrawable(ItemInfoWithIcon info, Path progressPath, Context context) {
         super(info.bitmap);
         mItem = info;
-        mShapePath = getShapePath();
+        mProgressPath = progressPath;
         mScaledTrackPath = new Path();
         mScaledProgressPath = new Path();
 
@@ -129,7 +131,7 @@ public class PreloadIconDrawable extends FastBitmapDrawable {
                 bounds.left + PROGRESS_WIDTH + PROGRESS_GAP,
                 bounds.top + PROGRESS_WIDTH + PROGRESS_GAP);
 
-        mShapePath.transform(mTmpMatrix, mScaledTrackPath);
+        mProgressPath.transform(mTmpMatrix, mScaledTrackPath);
         float scale = bounds.width() / DEFAULT_PATH_SIZE;
         mProgressPaint.setStrokeWidth(PROGRESS_WIDTH * scale);
 
@@ -145,7 +147,7 @@ public class PreloadIconDrawable extends FastBitmapDrawable {
         int key = (width << 16) | height;
         WeakReference<Pair<Path, Bitmap>> shadowRef = sShadowCache.get(key);
         Pair<Path, Bitmap> cache = shadowRef != null ? shadowRef.get() : null;
-        Bitmap shadow = cache != null && cache.first.equals(mShapePath) ? cache.second : null;
+        Bitmap shadow = cache != null && cache.first.equals(mProgressPath) ? cache.second : null;
         if (shadow != null) {
             return shadow;
         }
@@ -158,7 +160,7 @@ public class PreloadIconDrawable extends FastBitmapDrawable {
         mProgressPaint.clearShadowLayer();
         c.setBitmap(null);
 
-        sShadowCache.put(key, new WeakReference<>(Pair.create(mShapePath, shadow)));
+        sShadowCache.put(key, new WeakReference<>(Pair.create(mProgressPath, shadow)));
         return shadow;
     }
 
@@ -289,12 +291,5 @@ public class PreloadIconDrawable extends FastBitmapDrawable {
             }
         }
         invalidateSelf();
-    }
-
-    /**
-     * Returns a FastBitmapDrawable with the icon.
-     */
-    public static PreloadIconDrawable newPendingIcon(Context context, ItemInfoWithIcon info) {
-        return new PreloadIconDrawable(info, context);
     }
 }

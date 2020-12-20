@@ -31,7 +31,6 @@ import androidx.annotation.Nullable;
 
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.icons.IconCache;
-import com.android.launcher3.icons.IconProvider;
 import com.android.launcher3.icons.LauncherIcons;
 import com.android.launcher3.model.PredictionModel;
 import com.android.launcher3.notification.NotificationListener;
@@ -42,7 +41,6 @@ import com.android.launcher3.pm.UserCache;
 import com.android.launcher3.settings.HomeKeyWatcher;
 import com.android.launcher3.util.MainThreadInitializedObject;
 import com.android.launcher3.util.Preconditions;
-import com.android.launcher3.util.SafeCloseable;
 import com.android.launcher3.util.SecureSettingsObserver;
 import com.android.launcher3.util.SimpleBroadcastReceiver;
 import com.android.launcher3.widget.custom.CustomWidgetManager;
@@ -65,8 +63,6 @@ public class LauncherAppState {
     private SecureSettingsObserver mNotificationDotsObserver;
     private InstallSessionTracker mInstallSessionTracker;
     private SimpleBroadcastReceiver mModelChangeReceiver;
-    private SafeCloseable mCalendarChangeTracker;
-    private SafeCloseable mUserChangeListener;
 
     private HomeKeyWatcher mHomeKeyListener = null;
     private boolean mNeedsRestart;
@@ -99,17 +95,10 @@ public class LauncherAppState {
         if (FeatureFlags.IS_STUDIO_BUILD) {
             mModelChangeReceiver.register(mContext, ACTION_FORCE_ROLOAD);
         }
-
-        mCalendarChangeTracker = IconProvider.registerIconChangeListener(mContext,
-                mModel::onAppIconChanged, MODEL_EXECUTOR.getHandler());
-
         // TODO: remove listener on terminate
         FeatureFlags.APP_SEARCH_IMPROVEMENTS.addChangeListener(context, mModel::forceReload);
         CustomWidgetManager.INSTANCE.get(mContext)
                 .setWidgetRefreshCallback(mModel::refreshAndBindWidgetsAndShortcuts);
-
-        mUserChangeListener = UserCache.INSTANCE.get(mContext)
-                .addUserChangeListener(mModel::forceReload);
 
         mInvariantDeviceProfile.addOnChangeListener(this::onIdpChanged);
         new Handler().post( () -> mInvariantDeviceProfile.verifyConfigChangedInBackground(context));
@@ -196,12 +185,6 @@ public class LauncherAppState {
         mContext.getSystemService(LauncherApps.class).unregisterCallback(mModel);
         if (mInstallSessionTracker != null) {
             mInstallSessionTracker.unregister();
-        }
-        if (mCalendarChangeTracker != null) {
-            mCalendarChangeTracker.close();
-        }
-        if (mUserChangeListener != null) {
-            mUserChangeListener.close();
         }
         CustomWidgetManager.INSTANCE.get(mContext).setWidgetRefreshCallback(null);
 

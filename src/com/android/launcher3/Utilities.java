@@ -73,7 +73,6 @@ import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.dragndrop.FolderAdaptiveIcon;
 import com.android.launcher3.graphics.GridOptionsProvider;
 import com.android.launcher3.graphics.TintedDrawableSpan;
-import com.android.launcher3.icons.IconProvider;
 import com.android.launcher3.icons.LauncherIcons;
 import com.android.launcher3.icons.ShortcutCachingLogic;
 import com.android.launcher3.model.data.ItemInfo;
@@ -597,20 +596,19 @@ public final class Utilities {
     }
 
     /**
-     * Returns the full drawable for info without any flattening or pre-processing.
-     *
+     * Returns the full drawable for {@param info}.
      * @param outObj this is set to the internal data associated with {@param info},
      *               eg {@link LauncherActivityInfo} or {@link ShortcutInfo}.
      */
     public static Drawable getFullDrawable(Launcher launcher, ItemInfo info, int width, int height,
-            Object[] outObj) {
+            boolean flattenDrawable, Object[] outObj) {
         LauncherAppState appState = LauncherAppState.getInstance(launcher);
         if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
             LauncherActivityInfo activityInfo = launcher.getSystemService(LauncherApps.class)
                     .resolveActivity(info.getIntent(), info.user);
             outObj[0] = activityInfo;
-            return activityInfo == null ? null : new IconProvider(launcher).getIconForUI(
-                    activityInfo, launcher.getDeviceProfile().inv.fillResIconDpi);
+            return (activityInfo != null) ? appState.getIconCache()
+                    .getFullResIcon(activityInfo, flattenDrawable) : null;
         } else if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT) {
             if (info instanceof PendingAddShortcutInfo) {
                 ShortcutConfigActivityInfo activityInfo =

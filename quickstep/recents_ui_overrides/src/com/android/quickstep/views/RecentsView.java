@@ -67,7 +67,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
-import android.os.UserHandle;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -124,7 +123,7 @@ import com.android.quickstep.BaseActivityInterface;
 import com.android.quickstep.RecentsAnimationController;
 import com.android.quickstep.RecentsAnimationTargets;
 import com.android.quickstep.RecentsModel;
-import com.android.quickstep.RecentsModel.TaskVisualsChangeListener;
+import com.android.quickstep.RecentsModel.TaskThumbnailChangeListener;
 import com.android.quickstep.SystemUiProxy;
 import com.android.quickstep.TaskOverlayFactory;
 import com.android.quickstep.TaskThumbnailCache;
@@ -154,7 +153,7 @@ import java.util.function.Consumer;
 @TargetApi(Build.VERSION_CODES.R)
 public abstract class RecentsView<T extends StatefulActivity> extends PagedView implements
         Insettable, TaskThumbnailCache.HighResLoadingState.HighResLoadingStateChangedCallback,
-        InvariantDeviceProfile.OnIDPChangeListener, TaskVisualsChangeListener,
+        InvariantDeviceProfile.OnIDPChangeListener, TaskThumbnailChangeListener,
         SplitScreenBounds.OnChangeListener {
 
     private static final String TAG = RecentsView.class.getSimpleName();
@@ -494,21 +493,6 @@ public abstract class RecentsView<T extends StatefulActivity> extends PagedView 
             }
         }
         return null;
-    }
-
-    @Override
-    public void onTaskIconChanged(String pkg, UserHandle user) {
-        for (int i = 0; i < getTaskViewCount(); i++) {
-            TaskView tv = getTaskViewAt(i);
-            Task task = tv.getTask();
-            if (task != null && task.key != null && pkg.equals(task.key.getPackageName())
-                    && task.key.userId == user.getIdentifier()) {
-                task.icon = null;
-                if (tv.getIconView().getDrawable() != null) {
-                    tv.onTaskListVisibilityChanged(true /* visible */);
-                }
-            }
-        }
     }
 
     /**
