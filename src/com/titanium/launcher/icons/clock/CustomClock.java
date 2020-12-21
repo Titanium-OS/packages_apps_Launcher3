@@ -30,9 +30,9 @@ import android.os.Looper;
 import android.os.Process;
 
 import com.android.launcher3.FastBitmapDrawable;
-import com.android.launcher3.ItemInfoWithIcon;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.icons.LauncherIcons;
+import com.android.launcher3.model.data.ItemInfoWithIcon;
 import com.android.launcher3.util.Preconditions;
 
 import java.util.Collections;

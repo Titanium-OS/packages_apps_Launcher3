@@ -20,9 +20,9 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import com.android.launcher3.FastBitmapDrawable;
-import com.android.launcher3.ItemInfoWithIcon;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.graphics.DrawableFactory;
+import com.android.launcher3.model.data.ItemInfoWithIcon;
 import com.android.launcher3.util.ComponentKey;
 
 import com.titanium.launcher.icons.calendar.DateChangeReceiver;

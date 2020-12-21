@@ -21,8 +21,8 @@ import android.graphics.Rect;
 import android.os.SystemClock;
 
 import com.android.launcher3.FastBitmapDrawable;
-import com.android.launcher3.ItemInfoWithIcon;
 import com.android.launcher3.Utilities;
+import com.android.launcher3.model.data.ItemInfoWithIcon;
 
 import java.util.TimeZone;
 
@@ -30,7 +30,7 @@ class AutoUpdateClock extends FastBitmapDrawable implements Runnable {
     private ClockLayers mLayers;
 
     AutoUpdateClock(ItemInfoWithIcon info, ClockLayers layers) {
-        super(info);
+        super(info.bitmap);
         mLayers = layers;
     }
 

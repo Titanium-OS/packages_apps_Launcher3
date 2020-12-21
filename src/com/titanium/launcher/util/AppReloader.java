@@ -18,14 +18,13 @@ package com.titanium.launcher.util;
 
 import android.content.Context;
 import android.content.pm.LauncherActivityInfo;
+import android.content.pm.LauncherApps;
 import android.content.pm.ShortcutInfo;
 import android.os.UserHandle;
+import android.os.UserManager;
 
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherModel;
-import com.android.launcher3.compat.LauncherAppsCompat;
-import com.android.launcher3.compat.UserManagerCompat;
-import com.android.launcher3.shortcuts.DeepShortcutManager;
 import com.android.launcher3.util.ComponentKey;
 
 import java.util.Collection;
@@ -47,16 +46,14 @@ public class AppReloader {
 
     private final Context mContext;
     private final LauncherModel mModel;
-    private final UserManagerCompat mUsers;
-    private final DeepShortcutManager mShortcuts;
-    private final LauncherAppsCompat mApps;
+    private final UserManager mUsers;
+    private final LauncherApps mApps;
 
     private AppReloader(Context context) {
         mContext = context;
         mModel = LauncherAppState.getInstance(context).getModel();
-        mUsers = UserManagerCompat.getInstance(context);
-        mShortcuts = DeepShortcutManager.getInstance(context);
-        mApps = LauncherAppsCompat.getInstance(context);
+        mUsers = context.getSystemService(UserManager.class);
+        mApps = context.getSystemService(LauncherApps.class);
     }
 
     public Set<ComponentKey> withIconPack(String iconPack) {
@@ -96,9 +93,6 @@ public class AppReloader {
 
     private void reload(UserHandle user, String pkg) {
         mModel.onPackageChanged(pkg, user);
-        List<ShortcutInfo> shortcuts = mShortcuts.queryForPinnedShortcuts(pkg, user);
-        if (!shortcuts.isEmpty()) {
-            mModel.updatePinnedShortcuts(pkg, shortcuts, user);
-        }
+        mModel.onAppIconChanged(pkg, user);
     }
 }
