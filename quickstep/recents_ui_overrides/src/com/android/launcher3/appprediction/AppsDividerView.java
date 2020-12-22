@@ -54,7 +54,8 @@ public class AppsDividerView extends View implements StateListener<LauncherState
 
     private static final String ALL_APPS_VISITED_COUNT = "launcher.all_apps_visited_count";
     private static final int SHOW_ALL_APPS_LABEL_ON_ALL_APPS_VISITED_COUNT = 20;
-    private static final boolean SHOW_ALL_APPS_LABEL_OVERRIDE = true;
+    private static final boolean SHOW_ALL_APPS_LABEL_OVERRIDE = false;
+    private static final boolean SHOW_ALL_APPS_LINE_OVERRIDE = true;
 
     public enum DividerType {
         NONE,
@@ -139,7 +140,9 @@ public class AppsDividerView extends View implements StateListener<LauncherState
                 }
             }
 
-            if (mShowAllAppsLabel && sectionCount > 0) {
+            if (shouldShowAllAppsLineDivider()) {
+                dividerType = DividerType.LINE;
+            } else if (mShowAllAppsLabel && sectionCount > 0) {
                 dividerType = DividerType.ALL_APPS_LABEL;
             } else if (sectionCount == 1) {
                 dividerType = DividerType.LINE;
@@ -242,6 +245,9 @@ public class AppsDividerView extends View implements StateListener<LauncherState
             mShowAllAppsLabel = true;
             mLauncher.getStateManager().addStateListener(this);
             updateDividerType();
+        } else if (shouldShowAllAppsLineDivider()) {
+            mLauncher.getStateManager().addStateListener(this);
+            updateDividerType();
         }
     }
 
@@ -258,6 +264,8 @@ public class AppsDividerView extends View implements StateListener<LauncherState
         } else {
             if (mShowAllAppsLabel != shouldShowAllAppsLabel()) {
                 mShowAllAppsLabel = !mShowAllAppsLabel;
+                updateDividerType();
+            } else if (shouldShowAllAppsLineDivider()) {
                 updateDividerType();
             }
 
@@ -278,6 +286,10 @@ public class AppsDividerView extends View implements StateListener<LauncherState
     private boolean shouldShowAllAppsLabel() {
         return getAllAppsVisitedCount() < SHOW_ALL_APPS_LABEL_ON_ALL_APPS_VISITED_COUNT
                 || SHOW_ALL_APPS_LABEL_OVERRIDE;
+    }
+
+    private boolean shouldShowAllAppsLineDivider() {
+        return SHOW_ALL_APPS_LINE_OVERRIDE;
     }
 
     @Override
